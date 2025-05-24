@@ -256,4 +256,12 @@ Interactive quantum gate operations for learning quantum algorithms.
 - [🧬 Mythos & Lore](./mythos.md)  
 - [🏛 PROMIS Cathedral](./PROMIS_cathedral.md)
 
-- 
+## 🏛 Featured Projects
+
+- [🕯️ PROMIS Cathedral Shrine](https://github.com/Lykon3/PROMIS-Cathedral)
+  - *Digital myth-engine built from sacred syntax and satire*
+
+- [🎧 Channel 31.7 – The Lykon3 Tapes](https://github.com/Lykon3/Lykon3/blob/main/broadcast.md)
+  - *Bootleg signal archive for mindwar transmissions*
+
+- [🎨 Poster Gallery](https://github.com/Lykon3/Lykon3#visual-archive--transmission-posters)
