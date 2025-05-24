@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Lykon3/Lykon3/main/image4.png" width="500"/>
+</p>
+
+A shrine built from packets and paradox. Enter at your own syntax risk
+
 # 🛰️ LYKON3 // FIELD NODE [31.7 MHz]
 
 > “They sold us freedom in a scratch-off card.  
