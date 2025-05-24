@@ -247,3 +247,11 @@ Interactive quantum gate operations for learning quantum algorithms.
 ### 🌌 "In code we trust, in art we transcend"
 
 ![
+
+---
+
+## 📂 Signal Modules
+
+- [📻 Lykon3 Broadcast Archive](./broadcast.md)  
+- [🧬 Mythos & Lore](./mythos.md)  
+- [🏛 PROMIS Cathedral](./PROMIS_cathedral.md)
