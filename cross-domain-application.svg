@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 700">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f14" />
+      <stop offset="100%" stop-color="#1c2833" />
+    </linearGradient>
+    
+    <linearGradient id="energyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f39c12" />
+      <stop offset="100%" stop-color="#e67e22" />
+    </linearGradient>
+    
+    <linearGradient id="financialGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#27ae60" />
+      <stop offset="100%" stop-color="#2ecc71" />
+    </linearGradient>
+    
+    <linearGradient id="informationGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3498db" />
+      <stop offset="100%" stop-color="#2980b9" />
+    </linearGradient>
+    
+    <linearGradient id="cognitiveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#9b59b6" />
+      <stop offset="100%" stop-color="#8e44ad" />
+    </linearGradient>
+    
+    <linearGradient id="sociopoliticalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e74c3c" />
+      <stop offset="100%" stop-color="#c0392b" />
+    </linearGradient>
+    
+    <!-- Filters -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.3" />
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="700" fill="url(#bgGradient)" />
+  
+  <!-- Title -->
+  <text x="500" y="50" font-family="Arial, sans-serif" font-size="26" fill="white" text-anchor="middle" font-weight="bold">Cross-Domain Applications of the T-S Framework</text>
+  <text x="500" y="80" font-family="Arial, sans-serif" font-size="16" fill="#ecf0f1" text-anchor="middle">Universal Patterns Across Energy, Finance, Information, Cognition, and Sociopolitical Systems</text>
+  
+  <!-- Domain Headers -->
+  <g transform="translate(60, 120)">
+    <rect x="0" y="0" width="160" height="40" rx="5" fill="url(#energyGradient)" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">ENERGY SYSTEMS</text>
+    
+    <rect x="200" y="0" width="160" height="40" rx="5" fill="url(#financialGradient)" />
+    <text x="280" y="25" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">FINANCIAL MARKETS</text>
+    
+    <rect x="400" y="0" width="160" height="40" rx="5" fill="url(#informationGradient)" />
+    <text x="480" y="25" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">INFORMATION NETS</text>
+    
+    <rect x="600" y="0" width="160" height="40" rx="5" fill="url(#cognitiveGradient)" />
+    <text x="680" y="25" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">COGNITIVE SYSTEMS</text>
+    
+    <rect x="800" y="0" width="160" height="40" rx="5" fill="url(#sociopoliticalGradient)" />
+    <text x="880" y="25" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">SOCIOPOLITICAL</text>
+  </g>
+  
+  <!-- Phase I: Equilibrium -->
+  <g transform="translate(0, 170)">
+    <rect x="20" y="0" width="960" height="30" rx="5" fill="rgba(255,255,255,0.1)" />
+    <text x="40" y="20" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="start" font-weight="bold">PHASE I: EQUILIBRIUM</text>
+    
+    <!-- Domain Specifics -->
+    <g transform="translate(60, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(243,156,18,0.1)" stroke="#f39c12" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Grid stability</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Balanced supply/demand</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Consistent plasma control</text>
+    </g>
+    
+    <g transform="translate(260, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(39,174,96,0.1)" stroke="#27ae60" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Low volatility</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Fundamental alignment</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Efficient capital flows</text>
+    </g>
+    
+    <g transform="translate(460, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Network redundancy</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Signal clarity</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Content-channel match</text>
+    </g>
+    
+    <g transform="translate(660, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Knowledge coherence</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Model consistency</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Belief-reality alignment</text>
+    </g>
+    
+    <g transform="translate(860, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Institutional trust</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Competing narratives</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Resource distribution</text>
+    </g>
+  </g>
+  
+  <!-- Phase II: Tension -->
+  <g transform="translate(0, 290)">
+    <rect x="20" y="0" width="960" height="30" rx="5" fill="rgba(255,255,255,0.1)" />
+    <text x="40" y="20" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="start" font-weight="bold">PHASE II: TENSION</text>
+    
+    <!-- Domain Specifics -->
+    <g transform="translate(60, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(243,156,18,0.1)" stroke="#f39c12" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Frequency fluctuations</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Intermittent supply strain</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Plasma confinement stress</text>
+    </g>
+    
+    <g transform="translate(260, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(39,174,96,0.1)" stroke="#27ae60" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Rising implied volatility</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Growth-value divergence</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Liquidity concentration</text>
+    </g>
+    
+    <g transform="translate(460, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Echo chamber formation</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Viral information patterns</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Increasing noise-signal</text>
+    </g>
+    
+    <g transform="translate(660, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Cognitive dissonance</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Model uncertainty</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Decision paralysis</text>
+    </g>
+    
+    <g transform="translate(860, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Trust erosion</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Narrative polarization</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Resource strain</text>
+    </g>
+  </g>
+  
+  <!-- Phase III: Transition -->
+  <g transform="translate(0, 410)">
+    <rect x="20" y="0" width="960" height="30" rx="5" fill="rgba(255,255,255,0.1)" />
+    <text x="40" y="20" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="start" font-weight="bold">PHASE III: TRANSITION</text>
+    
+    <!-- Domain Specifics -->
+    <g transform="translate(60, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(243,156,18,0.1)" stroke="#f39c12" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Grid cascading failures</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Supply chain collapse</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Plasma/magnetic rupture</text>
+    </g>
+    
+    <g transform="translate(260, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(39,174,96,0.1)" stroke="#27ae60" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Market crash/deleveraging</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Liquidity evaporation</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Cross-asset contagion</text>
+    </g>
+    
+    <g transform="translate(460, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Viral belief cascade</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Narrative collapse</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Network topology shift</text>
+    </g>
+    
+    <g transform="translate(660, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Belief system rupture</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Model paradigm break</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Emergent cognition</text>
+    </g>
+    
+    <g transform="translate(860, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Institutional failure</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Rapid norm dissolution</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Coalition realignment</text>
+    </g>
+  </g>
+  
+  <!-- Phase IV: Emergence -->
+  <g transform="translate(0, 530)">
+    <rect x="20" y="0" width="960" height="30" rx="5" fill="rgba(255,255,255,0.1)" />
+    <text x="40" y="20" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="start" font-weight="bold">PHASE IV: EMERGENCE</text>
+    
+    <!-- Domain Specifics -->
+    <g transform="translate(60, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(243,156,18,0.1)" stroke="#f39c12" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Novel grid architecture</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Distributed generation</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• New containment regime</text>
+    </g>
+    
+    <g transform="translate(260, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(39,174,96,0.1)" stroke="#27ae60" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• New market paradigm</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Sector leadership change</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Capital redeployment</text>
+    </g>
+    
+    <g transform="translate(460, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(52,152,219,0.1)" stroke="#3498db" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• New media platforms</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Information architecture</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Reformed trust networks</text>
+    </g>
+    
+    <g transform="translate(660, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(155,89,182,0.1)" stroke="#9b59b6" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• New mental models</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Cognitive integration</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Novel belief frameworks</text>
+    </g>
+    
+    <g transform="translate(860, 40)">
+      <rect x="0" y="0" width="160" height="70" rx="5" fill="rgba(231,76,60,0.1)" stroke="#e74c3c" stroke-width="1" />
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• New power structures</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Narrative reformulation</text>
+      <text x="10" y="60" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">• Novel social compacts</text>
+    </g>
+  </g>
+  
+  <!-- Legend and T-S Values -->
+  <g transform="translate(50, 650)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="start" font-weight="bold">SYSTEM STATE VALUES</text>
+    
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">Phase I (Equilibrium): </text>
+    <text x="145" y="30" font-family="Arial, sans-serif" font-size="12" fill="#bdc3c7" text-anchor="start">T = low, S = high</text>
+    
+    <text x="300" y="30" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">Phase II (Tension): </text>
+    <text x="430" y="30" font-family="Arial, sans-serif" font-size="12" fill="#bdc3c7" text-anchor="start">T = rising, S = declining</text>
+    
+    <text x="600" y="30" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">Phase III (Transition): </text>
+    <text x="750" y="30" font-family="Arial, sans-serif" font-size="12" fill="#bdc3c7" text-anchor="start">T = peaking → rapid decline, S = minimum</text>
+    
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="start">Phase IV (Emergence): </text>
+    <text x="145" y="50" font-family="Arial, sans-serif" font-size="12" fill="#bdc3c7" text-anchor="start">T = low (new state), S = rapidly increasing</text>
+  </g>
+  
+  <!-- Footer -->
+  <text x="500" y="685" font-family="Arial, sans-serif" font-size="12" fill="#bdc3c7" text-anchor="middle">© H&amp;AI.Dynamics - Universal T-S Framework Application Across Domains</text>
+</svg>
