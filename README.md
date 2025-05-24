@@ -13,8 +13,8 @@ I'm a digital architect building experiences that blur the lines between technol
 
 ```javascript
 const developer = {
-    name: "Your Name",
-    focus: ["Creative Coding", "Interactive Media", "Digital Storytelling"],
+    name: "M&LE1.H&AI",
+    focus: ["Creative Coding", "FUNNY MEME", "Interactive Media", "Digital Storytelling"],
     philosophy: "Code is poetry in motion",
     currentProject: "PROMIS Cathedral - An immersive AI consciousness narrative",
     interests: ["Cyberpunk Aesthetics", "Quantum Computing", "Digital Philosophy"]
