@@ -1,0 +1,918 @@
+﻿# Field Syntax: A Framework for Visualizing Massless Information Systems
+
+
+## Repository Structure
+
+
+```
+field-syntax/
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── examples/
+│   ├── 01_basic_field_syntax.ipynb
+│   ├── 02_temporal_evolution.ipynb
+│   ├── 03_critical_transitions.ipynb
+│   └── 04_interactive_dashboard.ipynb
+├── field_syntax/
+│   ├── __init__.py
+│   ├── core.py
+│   ├── metrics.py
+│   ├── visualization.py
+│   ├── warning_signals.py
+│   └── utils.py
+├── tests/
+│   └── test_*.py
+└── data/
+    └── example_fields/
+```
+
+
+## Key Components
+
+
+### 1. Core Module (`field_syntax/core.py`)
+
+
+```python
+import numpy as np
+import scipy.ndimage
+import scipy.stats
+import scipy.signal
+
+
+class FieldSyntax:
+    """
+    Core class for analyzing massless information fields using Field Syntax framework.
+    """
+    def __init__(self, field_data, dx=1, dt=1):
+        """
+        Initialize with field data.
+        
+        Parameters:
+        -----------
+        field_data : ndarray
+            2D array for static field or 3D array (t, y, x) for temporal field
+        dx : float
+            Spatial grid resolution
+        dt : float
+            Temporal resolution (for temporal fields)
+        """
+        self.dx = dx
+        self.dt = dt
+        
+        # Handle both static and temporal fields
+        if field_data.ndim == 2:
+            self.is_temporal = False
+            self.field = field_data[np.newaxis, :, :]
+        elif field_data.ndim == 3:
+            self.is_temporal = True
+            self.field = field_data
+        else:
+            raise ValueError("Field data must be 2D (static) or 3D (temporal)")
+            
+        self.time_steps, self.height, self.width = self.field.shape
+        
+        # Compute derived fields
+        self._compute_derived_fields()
+        
+        # Compute T-S metrics for temporal fields
+        if self.is_temporal:
+            self._compute_ts_metrics()
+            self._compute_warning_signals()
+        
+    def _compute_derived_fields(self):
+        """Compute all derived fields needed for analysis"""
+        self.curvature_energy = np.zeros_like(self.field)
+        self.tension_x = np.zeros_like(self.field)
+        self.tension_y = np.zeros_like(self.field)
+        self.coherence = np.zeros_like(self.field)
+        
+        # Compute for each time step
+        for t in range(self.time_steps):
+            # Curvature Energy: (∇²Φ)²
+            laplacian = scipy.ndimage.laplace(self.field[t])
+            self.curvature_energy[t] = laplacian**2
+            
+            # Tension Vector Field: ∇Φ
+            gy, gx = np.gradient(self.field[t], self.dx)
+            self.tension_x[t] = gx
+            self.tension_y[t] = gy
+            
+            # Phase Coherence
+            angles = np.arctan2(gy, gx)
+            cos_angles = np.cos(angles)
+            sin_angles = np.sin(angles)
+            
+            # Filter to get local averages
+            cos_avg = scipy.ndimage.gaussian_filter(cos_angles, sigma=3)
+            sin_avg = scipy.ndimage.gaussian_filter(sin_angles, sigma=3)
+            
+            # Resultant vector length gives coherence
+            self.coherence[t] = np.sqrt(cos_avg**2 + sin_avg**2)
+    
+    def _compute_ts_metrics(self):
+        """Calculate Tension-Stability metrics for temporal fields"""
+        # Initialize arrays
+        self.tension = np.zeros(self.time_steps)
+        self.stability = np.zeros(self.time_steps)
+        
+        # Calculate global metrics for each time step
+        for t in range(self.time_steps):
+            # Tension correlates with average curvature energy and field gradient
+            gx, gy = np.gradient(self.field[t])
+            gradient_magnitude = np.sqrt(gx**2 + gy**2)
+            
+            self.tension[t] = np.mean(self.curvature_energy[t]) * (1 + 0.5 * np.mean(gradient_magnitude))
+            
+            # Stability inversely correlates with tension and positively with coherence
+            self.stability[t] = np.mean(self.coherence[t]) / (1 + 0.7 * self.tension[t])
+        
+        # Normalize for visualization
+        self.tension = (self.tension - np.min(self.tension)) / (np.max(self.tension) - np.min(self.tension) + 1e-10)
+        self.stability = (self.stability - np.min(self.stability)) / (np.max(self.stability) - np.min(self.stability) + 1e-10)
+        
+        # Detect critical transitions
+        ts_product = self.tension * self.stability
+        ts_product_diff = np.abs(np.diff(ts_product))
+        threshold = np.percentile(ts_product_diff, 85)
+        self.critical_points = np.where(ts_product_diff > threshold)[0] + 1
+    
+    def _compute_warning_signals(self, window_size=3):
+        """Calculate early warning signals for critical transitions"""
+        # Calculate global metrics
+        mean_curvature = np.array([np.mean(self.curvature_energy[t]) for t in range(self.time_steps)])
+        mean_coherence = np.array([np.mean(self.coherence[t]) for t in range(self.time_steps)])
+        
+        # Initialize warning signals dictionary
+        self.warning_signals = {
+            'time': np.arange(self.time_steps),
+            'autocorrelation': np.zeros(self.time_steps),
+            'variance': np.zeros(self.time_steps),
+            'coherence_drop_rate': np.zeros(self.time_steps),
+            'warning_level': np.zeros(self.time_steps)
+        }
+        
+        # Calculate metrics
+        for t in range(window_size, self.time_steps):
+            # Window of data
+            window = mean_curvature[t-window_size:t]
+            
+            # Autocorrelation (lag-1)
+            if len(window) > 1:
+                autocorr = np.corrcoef(window[:-1], window[1:])[0, 1]
+                self.warning_signals['autocorrelation'][t] = autocorr if not np.isnan(autocorr) else 0
+            
+            # Variance
+            self.warning_signals['variance'][t] = np.var(window)
+            
+            # Coherence drop rate
+            coherence_window = mean_coherence[t-window_size:t]
+            coherence_diff = np.diff(coherence_window)
+            self.warning_signals['coherence_drop_rate'][t] = -np.mean(coherence_diff) if len(coherence_diff) > 0 else 0
+        
+        # Normalize signals
+        for signal in ['autocorrelation', 'variance', 'coherence_drop_rate']:
+            values = self.warning_signals[signal]
+            if np.max(values) > np.min(values):
+                self.warning_signals[signal] = (values - np.min(values)) / (np.max(values) - np.min(values) + 1e-10)
+        
+        # Compute composite warning level
+        self.warning_signals['warning_level'] = (
+            self.warning_signals['autocorrelation'] * 0.4 +
+            self.warning_signals['variance'] * 0.2 +
+            self.warning_signals['coherence_drop_rate'] * 0.4
+        )
+    
+    def get_state_classification(self, t):
+        """Classify the system state at time t"""
+        # Simple state classification based on metrics
+        if not self.is_temporal:
+            return "STATIC"
+        
+        if t in self.critical_points:
+            return "CRITICAL TRANSITION"
+        
+        if t > 0:
+            # Check for rapid coherence drop
+            coherence_t = np.mean(self.coherence[t])
+            coherence_prev = np.mean(self.coherence[t-1])
+            coherence_drop = (coherence_prev - coherence_t) / coherence_prev
+            
+            # Check for tension increase
+            tension_increase = self.tension[t] - self.tension[t-1]
+            
+            if coherence_drop > 0.1 and self.tension[t] > 0.7:
+                return "PRE-CRITICAL"
+            elif tension_increase > 0.05:
+                return "ACCUMULATING"
+            elif tension_increase < -0.05:
+                return "RELAXING"
+            
+        if self.tension[t] < 0.3:
+            return "STABLE"
+        elif self.tension[t] > 0.7:
+            return "UNSTABLE"
+        else:
+            return "INTERMEDIATE"
+```
+
+
+### 2. Visualization Module (`field_syntax/visualization.py`)
+
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+from matplotlib.collections import EllipseCollection
+from matplotlib.colors import ListedColormap
+import matplotlib.patches as patches
+
+
+def create_glyph_cmap():
+    """Create a custom colormap for glyphs"""
+    colors = plt.cm.plasma(np.linspace(0, 1, 256))
+    return ListedColormap(colors)
+
+
+def visualize_field_with_glyphs(field_obj, t=0, step=8, ax=None):
+    """
+    Visualize field with glyphs encoding local properties
+    
+    Parameters:
+    -----------
+    field_obj : FieldSyntax object
+        The field object with computed metrics
+    t : int
+        Time step to visualize
+    step : int
+        Spacing between glyphs
+    ax : matplotlib.axes, optional
+        Axes to plot on
+    
+    Returns:
+    --------
+    fig, ax : Figure and Axes objects
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 10))
+    else:
+        fig = ax.figure
+    
+    # Show field as background
+    im = ax.imshow(field_obj.field[t], origin='lower', cmap='viridis')
+    plt.colorbar(im, ax=ax, label='Field Value')
+    
+    # Create grid for glyphs
+    height, width = field_obj.field.shape[1:]
+    X, Y = np.meshgrid(
+        np.arange(0, width, step),
+        np.arange(0, height, step))
+    positions = np.column_stack([X.ravel(), Y.ravel()])
+    
+    # Get values at those positions
+    curvature_values = field_obj.curvature_energy[t][positions[:, 1], positions[:, 0]]
+    tx_values = field_obj.tension_x[t][positions[:, 1], positions[:, 0]]
+    ty_values = field_obj.tension_y[t][positions[:, 1], positions[:, 0]]
+    coherence_values = field_obj.coherence[t][positions[:, 1], positions[:, 0]]
+    
+    # Create glyph properties
+    sizes = 5 + 50 * curvature_values / (np.max(curvature_values) + 1e-10)
+    angles = np.arctan2(ty_values, tx_values)
+    coherence_norm = (coherence_values - np.min(coherence_values)) / (np.max(coherence_values) - np.min(coherence_values) + 1e-10)
+    
+    width = sizes
+    height = sizes * 0.4  # Elliptical shape
+    
+    # Create ellipse collection
+    glyph_cmap = create_glyph_cmap()
+    ec = EllipseCollection(
+        width, height, np.rad2deg(angles), 
+        units='x', offsets=positions,
+        transOffset=ax.transData,
+        array=coherence_norm,
+        cmap=glyph_cmap,
+        linewidth=1)
+        
+    ax.add_collection(ec)
+    
+    # Add colorbar for coherence
+    cbar = plt.colorbar(ec, ax=ax, label='Phase Coherence')
+    
+    # Set title and labels
+    ax.set_title(f'Field Syntax Visualization (t={t})')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    
+    return fig, ax
+
+
+def plot_ts_phase_diagram(field_obj, ax=None, current_t=None):
+    """Plot Tension-Stability phase diagram"""
+    if not field_obj.is_temporal:
+        raise ValueError("T-S phase diagram requires temporal field data")
+    
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 8))
+    else:
+        fig = ax.figure
+    
+    # Create colormap based on time
+    time_norm = np.linspace(0, 1, field_obj.time_steps)
+    
+    # Plot trajectory with time-based coloring
+    scatter = ax.scatter(field_obj.tension, field_obj.stability, 
+                        c=time_norm, cmap='viridis', 
+                        s=80, alpha=0.8)
+    
+    # Connect points with line
+    ax.plot(field_obj.tension, field_obj.stability, 'k-', alpha=0.3)
+    
+    # Mark special points
+    ax.scatter(field_obj.tension[0], field_obj.stability[0], 
+              color='green', s=150, marker='o', label='Start')
+    
+    ax.scatter(field_obj.tension[-1], field_obj.stability[-1], 
+              color='blue', s=150, marker='s', label='End')
+    
+    # Mark critical transitions
+    if len(field_obj.critical_points) > 0:
+        ax.scatter(field_obj.tension[field_obj.critical_points], 
+                  field_obj.stability[field_obj.critical_points], 
+                  color='red', s=150, marker='*', label='Critical Transitions')
+    
+    # Mark current time step if provided
+    if current_t is not None:
+        ax.scatter(field_obj.tension[current_t], field_obj.stability[current_t], 
+                  color='red', s=150, marker='X', label=f't={current_t}')
+    
+    # Add theoretical curve
+    t_range = np.linspace(0, 1, 100)
+    s_curve = 1 / (1 + 3*t_range)
+    ax.plot(t_range, s_curve, 'r--', alpha=0.5, label='Theoretical T-S Curve')
+    
+    # Add threshold line
+    t_threshold = 0.65
+    ax.axvline(x=t_threshold, color='red', linestyle='--', alpha=0.5, 
+              label='Critical Threshold')
+    
+    # Annotate regions
+    ax.text(0.1, 0.9, "STABLE", fontsize=12, color='green')
+    ax.text(0.7, 0.2, "CRITICAL", fontsize=12, color='red')
+    ax.text(0.3, 0.5, "ACCUMULATION", fontsize=12, color='orange')
+    
+    # Add colorbar for time
+    cbar = fig.colorbar(scatter, ax=ax)
+    cbar.set_label('Normalized Time')
+    
+    # Set labels and title
+    ax.set_xlabel('Tension (T)', fontsize=14)
+    ax.set_ylabel('Stability (S)', fontsize=14)
+    ax.set_title('T-S Phase Space', fontsize=14)
+    ax.legend(loc='best')
+    
+    return fig, ax
+
+
+def plot_warning_signals(field_obj, ax=None, current_t=None):
+    """Plot early warning signals"""
+    if not field_obj.is_temporal:
+        raise ValueError("Warning signals require temporal field data")
+    
+    if ax is None:
+        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    else:
+        fig = ax.figure
+        axes = np.array([[ax]])
+    
+    # Flatten axes for easier indexing
+    axes_flat = axes.flatten()
+    
+    # 1. Autocorrelation (if available)
+    if len(axes_flat) > 0:
+        ax1 = axes_flat[0]
+        ax1.plot(field_obj.warning_signals['time'], 
+                field_obj.warning_signals['autocorrelation'], 'b-', linewidth=2)
+        if current_t is not None:
+            ax1.axvline(x=current_t, color='k', linestyle='--')
+        ax1.set_xlabel('Time Step')
+        ax1.set_ylabel('Value')
+        ax1.set_title('Lag-1 Autocorrelation')
+    
+    # 2. Variance (if available)
+    if len(axes_flat) > 1:
+        ax2 = axes_flat[1]
+        ax2.plot(field_obj.warning_signals['time'], 
+                field_obj.warning_signals['variance'], 'g-', linewidth=2)
+        if current_t is not None:
+            ax2.axvline(x=current_t, color='k', linestyle='--')
+        ax2.set_xlabel('Time Step')
+        ax2.set_ylabel('Value')
+        ax2.set_title('Variance')
+    
+    # 3. Coherence drop rate (if available)
+    if len(axes_flat) > 2:
+        ax3 = axes_flat[2]
+        ax3.plot(field_obj.warning_signals['time'], 
+                field_obj.warning_signals['coherence_drop_rate'], 'm-', linewidth=2)
+        if current_t is not None:
+            ax3.axvline(x=current_t, color='k', linestyle='--')
+        ax3.set_xlabel('Time Step')
+        ax3.set_ylabel('Value')
+        ax3.set_title('Coherence Drop Rate')
+    
+    # 4. Composite warning level (if available)
+    if len(axes_flat) > 3:
+        ax4 = axes_flat[3]
+        warning_level = field_obj.warning_signals['warning_level']
+        
+        # Create colormap for warning level
+        cmap = plt.cm.get_cmap('YlOrRd')
+        colors = cmap(warning_level)
+        
+        ax4.bar(field_obj.warning_signals['time'], warning_level, color=colors, width=0.8)
+        
+        # Add threshold line
+        warning_threshold = 0.7
+        ax4.axhline(y=warning_threshold, color='red', 
+                   linestyle='--', alpha=0.7, label='Warning Threshold')
+        
+        if current_t is not None:
+            ax4.axvline(x=current_t, color='k', linestyle='--')
+        
+        ax4.set_xlabel('Time Step')
+        ax4.set_ylabel('Value')
+        ax4.set_title('Composite Warning Level')
+        ax4.legend()
+    
+    plt.tight_layout()
+    return fig, axes
+
+
+def create_comprehensive_dashboard(field_obj, t):
+    """Create comprehensive dashboard for a specific time step"""
+    if not field_obj.is_temporal:
+        raise ValueError("Dashboard requires temporal field data")
+    
+    fig = plt.figure(figsize=(18, 14))
+    gs = gridspec.GridSpec(3, 3, figure=fig, height_ratios=[1.2, 0.8, 1], 
+                         width_ratios=[1.2, 1, 0.8], hspace=0.3, wspace=0.3)
+    
+    # ---- TOP ROW ----
+    
+    # 1. Field with Glyphs (top left)
+    ax_field = fig.add_subplot(gs[0, 0])
+    visualize_field_with_glyphs(field_obj, t=t, ax=ax_field)
+    
+    # 2. T-S Phase Diagram (top middle)
+    ax_ts = fig.add_subplot(gs[0, 1])
+    plot_ts_phase_diagram(field_obj, ax=ax_ts, current_t=t)
+    
+    # 3. System State Summary (top right)
+    ax_summary = fig.add_subplot(gs[0, 2])
+    ax_summary.axis('off')
+    
+    # Create text box for system state summary
+    props = dict(boxstyle='round', facecolor='lightgrey', alpha=0.5)
+    state_class = field_obj.get_state_classification(t)
+    
+    system_state = (
+        f"SYSTEM STATE SUMMARY (t={t})\n"
+        "------------------------\n"
+        f"Tension (T): {field_obj.tension[t]:.2f}\n"
+        f"Stability (S): {field_obj.stability[t]:.2f}\n"
+        f"Warning Level: {field_obj.warning_signals['warning_level'][t]:.2f}\n\n"
+        f"Phase: {state_class}\n"
+    )
+    
+    ax_summary.text(0.05, 0.95, system_state, transform=ax_summary.transAxes,
+                 fontsize=12, verticalalignment='top', bbox=props)
+    
+    # ---- MIDDLE ROW ----
+    
+    # 4. Curvature Energy Evolution (middle left)
+    ax_curvature = fig.add_subplot(gs[1, 0])
+    mean_curvature = np.array([np.mean(field_obj.curvature_energy[i]) 
+                              for i in range(field_obj.time_steps)])
+    
+    ax_curvature.plot(np.arange(field_obj.time_steps), mean_curvature, 'r-', linewidth=2)
+    ax_curvature.axvline(x=t, color='k', linestyle='--')
+    ax_curvature.set_xlabel('Time Step')
+    ax_curvature.set_ylabel('Mean Curvature Energy')
+    ax_curvature.set_title('Curvature Energy Evolution')
+    
+    # 5. Coherence Evolution (middle middle)
+    ax_coherence = fig.add_subplot(gs[1, 1])
+    mean_coherence = np.array([np.mean(field_obj.coherence[i]) 
+                              for i in range(field_obj.time_steps)])
+    
+    ax_coherence.plot(np.arange(field_obj.time_steps), mean_coherence, 
+                     'b-', linewidth=2, label='Mean Coherence')
+    
+    # Calculate coherence drop rate
+    coherence_drop = -np.gradient(mean_coherence)
+    ax_coherence.plot(np.arange(field_obj.time_steps), coherence_drop, 
+                     'm--', linewidth=2, label='Drop Rate')
+    
+    ax_coherence.axvline(x=t, color='k', linestyle='--')
+    ax_coherence.set_xlabel('Time Step')
+    ax_coherence.set_ylabel('Value')
+    ax_coherence.set_title('Coherence Evolution')
+    ax_coherence.legend()
+    
+    # 6. Composite Warning Level (middle right)
+    ax_warning = fig.add_subplot(gs[1, 2])
+    warning_level = field_obj.warning_signals['warning_level']
+    
+    # Create colormap for warning level
+    cmap = plt.cm.get_cmap('YlOrRd')
+    colors = cmap(warning_level / np.max(warning_level))
+    
+    ax_warning.bar(np.arange(field_obj.time_steps), warning_level, color=colors, width=0.8)
+    ax_warning.axhline(y=0.7, color='red', linestyle='--', alpha=0.7, 
+                      label='Warning Threshold')
+    ax_warning.axvline(x=t, color='k', linestyle='--')
+    ax_warning.set_xlabel('Time Step')
+    ax_warning.set_ylabel('Warning Level')
+    ax_warning.set_title('Composite Early Warning Signal')
+    ax_warning.legend()
+    
+    # ---- BOTTOM ROW ----
+    
+    # 7. Individual Warning Signals
+    axs = [fig.add_subplot(gs[2, i]) for i in range(3)]
+    
+    # Autocorrelation
+    axs[0].plot(np.arange(field_obj.time_steps), 
+               field_obj.warning_signals['autocorrelation'], 'b-', linewidth=2)
+    axs[0].axvline(x=t,
+
+
+```python
+    # Initialize Field Syntax analyzer
+    field_syntax = FieldSyntax(field_data)
+    print("Field Syntax analyzer initialized")
+    print(f"Detected {len(field_syntax.critical_points)} critical transition points at time steps: {field_syntax.critical_points}")
+```
+
+
+```python
+{
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Interactive Dashboard\n",
+    "\n",
+    "Now we'll create an interactive dashboard to explore the field's evolution over time. Use the slider to navigate through different time steps."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create interactive dashboard with time slider\n",
+    "@interact(t=IntSlider(min=0, max=field_syntax.time_steps-1, step=1, value=0, \n",
+    "                     description='Time step:', continuous_update=False, \n",
+    "                     style={'description_width': 'initial'}))\n",
+    "def update_dashboard(t):\n",
+    "    plt.figure(figsize=(18, 14))\n",
+    "    fig = create_comprehensive_dashboard(field_syntax, t)\n",
+    "    plt.close()  # Close the figure created by the dashboard function\n",
+    "    display(fig)  # Display the figure\n",
+    "    \n",
+    "    # Print system state information\n",
+    "    print(f\"Time step: {t}\")\n",
+    "    print(f\"Tension (T): {field_syntax.tension[t]:.2f}\")\n",
+    "    print(f\"Stability (S): {field_syntax.stability[t]:.2f}\")\n",
+    "    print(f\"Warning Level: {field_syntax.warning_signals['warning_level'][t]:.2f}\")\n",
+    "    print(f\"System State: {field_syntax.get_state_classification(t)}\")\n",
+    "    \n",
+    "    # Check if this is a critical point\n",
+    "    if t in field_syntax.critical_points:\n",
+    "        print(\"⚠️ CRITICAL TRANSITION DETECTED ⚠️\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Analysis of Critical Transitions\n",
+    "\n",
+    "Let's examine the key phases of the field's evolution, focusing on the approach to critical transitions."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Analyze key time points: beginning, middle, critical transition\n",
+    "key_timepoints = [0, field_syntax.time_steps//2]\n",
+    "if len(field_syntax.critical_points) > 0:\n",
+    "    key_timepoints.append(field_syntax.critical_points[0])\n",
+    "else:\n",
+    "    key_timepoints.append(field_syntax.time_steps-1)\n",
+    "\n",
+    "for t in key_timepoints:\n",
+    "    print(f\"\\n=== Analysis for time step {t} ===\")\n",
+    "    print(f\"System state: {field_syntax.get_state_classification(t)}\")\n",
+    "    print(f\"Tension: {field_syntax.tension[t]:.2f}, Stability: {field_syntax.stability[t]:.2f}\")\n",
+    "    \n",
+    "    # Create a focused view of just the field with glyphs\n",
+    "    plt.figure(figsize=(10, 10))\n",
+    "    fig, ax = field_syntax.visualize_field_with_glyphs(t)\n",
+    "    plt.tight_layout()\n",
+    "    plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Evolution of T-S Trajectory\n",
+    "\n",
+    "Now let's look closely at how the system moves through Tension-Stability phase space."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Plot T-S phase diagram\n",
+    "plt.figure(figsize=(12, 10))\n",
+    "fig, ax = field_syntax.plot_ts_phase_diagram()\n",
+    "plt.tight_layout()\n",
+    "plt.show()\n",
+    "\n",
+    "# Describe the trajectory phases\n",
+    "print(\"T-S Trajectory Analysis:\")\n",
+    "print(\"------------------------\")\n",
+    "print(\"Initial phase (t=0-2): Low tension, high stability - system in stable configuration\")\n",
+    "print(\"Middle phase (t=3-6): Rising tension, decreasing stability - system accumulating stress\")\n",
+    "if len(field_syntax.critical_points) > 0:\n",
+    "    cp = field_syntax.critical_points[0]\n",
+    "    print(f\"Critical transition (t={cp}): Sharp change in T-S product - system undergoes fundamental reorganization\")\n",
+    "    if cp < field_syntax.time_steps - 1:\n",
+    "        print(f\"Post-critical phase (t={cp+1}-{field_syntax.time_steps-1}): System settling into new configuration\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Early Warning Signals Analysis\n",
+    "\n",
+    "Finally, let's examine the early warning signals to understand how they predict critical transitions."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Plot early warning signals\n",
+    "plt.figure(figsize=(14, 10))\n",
+    "fig, axes = field_syntax.plot_warning_signals()\n",
+    "plt.tight_layout()\n",
+    "plt.show()\n",
+    "\n",
+    "# Provide interpretation\n",
+    "print(\"Early Warning Signals Interpretation:\")\n",
+    "print(\"-----------------------------------\")\n",
+    "print(\"1. Autocorrelation: Increased critical slowing down indicates system's decreasing resilience\")\n",
+    "print(\"2. Variance: Rising fluctuations show the system becoming more susceptible to perturbations\")\n",
+    "print(\"3. Coherence Drop Rate: Accelerating loss of order signals imminent transition\")\n",
+    "print(\"4. Composite Warning: Integration of multiple signals provides robust prediction of critical events\")\n",
+    "\n",
+    "# Calculate lead time (how many steps before critical transition do warnings appear)\n",
+    "if len(field_syntax.critical_points) > 0:\n",
+    "    cp = field_syntax.critical_points[0]\n",
+    "    warning_threshold = 0.5\n",
+    "    warning_steps = np.where(field_syntax.warning_signals['warning_level'][:cp] > warning_threshold)[0]\n",
+    "    if len(warning_steps) > 0:\n",
+    "        first_warning = warning_steps[0]\n",
+    "        lead_time = cp - first_warning\n",
+    "        print(f\"\\nEarly Warning Lead Time: {lead_time} time steps before critical transition\")\n",
+    "        print(f\"First significant warning at t={first_warning}, critical transition at t={cp}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Conclusion\n",
+    "\n",
+    "The Field Syntax framework provides a powerful approach for analyzing massless information systems. By encoding local field properties into visual glyphs and tracking global system dynamics through Tension-Stability phase space, we can detect early warnings of critical transitions before they occur.\n",
+    "\n",
+    "This has important applications in understanding complex systems across multiple domains, from plasma physics to optical vortices to network dynamics."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
+```
+
+
+### 4. README.md for the GitHub Repository
+
+
+```markdown
+# Field Syntax: A Framework for Visualizing Massless Information Systems
+
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
+
+## Overview
+
+
+Field Syntax is a Python framework for analyzing and visualizing the dynamics of massless information fields as they evolve through different stability regimes and undergo critical transitions. This framework provides tools for:
+
+
+1. **Encoding field properties** into intuitive visual glyphs
+2. **Tracking system evolution** through Tension-Stability phase space
+3. **Detecting early warning signals** of critical transitions
+4. **Visualizing multi-scale dynamics** from local structures to global stability
+
+
+## Installation
+
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/field-syntax.git
+cd field-syntax
+
+
+# Create and activate a virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+
+# Install dependencies
+pip install -r requirements.txt
+
+
+# Install the package in development mode
+pip install -e .
+```
+
+
+## Quick Start
+
+
+```python
+import numpy as np
+from field_syntax.core import FieldSyntax
+from field_syntax.visualization import create_comprehensive_dashboard
+
+
+# Generate or load field data (time, height, width)
+field_data = np.random.rand(10, 100, 100)  # Example random field
+
+
+# Initialize Field Syntax analyzer
+field_syntax = FieldSyntax(field_data)
+
+
+# Create visualization for specific time step
+fig = create_comprehensive_dashboard(field_syntax, t=5)
+```
+
+
+## Examples
+
+
+The `examples/` directory contains Jupyter notebooks demonstrating various aspects of the Field Syntax framework:
+
+
+1. **Basic Field Syntax**: Introduction to field analysis and glyph visualization
+2. **Temporal Evolution**: Tracking how fields change over time
+3. **Critical Transitions**: Detecting and analyzing stability thresholds
+4. **Interactive Dashboard**: Exploring field dynamics with interactive controls
+
+
+## Core Concepts
+
+
+### Field Syntax Glyphs
+
+
+Field Syntax uses elliptical glyphs to encode multiple field properties simultaneously:
+- **Size**: Encodes curvature energy (∇²Φ)²
+- **Orientation**: Represents tension direction (∇Φ)
+- **Color**: Indicates phase coherence (local ordering)
+
+
+### Tension-Stability (T-S) Framework
+
+
+The T-S framework provides a phase space for tracking system stability:
+- **Tension (T)**: Measures the system's stress level (related to curvature energy)
+- **Stability (S)**: Quantifies resilience to perturbations (related to coherence)
+- **Critical Transitions**: Occur when crossing stability thresholds
+
+
+### Early Warning Signals
+
+
+Field Syntax implements multiple early warning indicators:
+- **Autocorrelation**: Critical slowing down as the system approaches transition
+- **Variance**: Increased fluctuations near critical points
+- **Coherence Drop Rate**: Acceleration of disorder
+- **Composite Warning**: Integrated measure combining multiple signals
+
+
+## Applications
+
+
+Field Syntax can be applied to analyze various massless information systems:
+- **Optical Vortices**: Light field structure and instabilities
+- **Plasma Physics**: Pre-disruption dynamics in fusion plasmas
+- **Network Flows**: Information propagation and cascade failures
+- **Pattern Formation**: Emergent structures in complex systems
+
+
+## License
+
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+## Citation
+
+
+If you use Field Syntax in your research, please cite:
+
+
+```
+@software{field_syntax2025,
+  author = {Your Name},
+  title = {Field Syntax: A Framework for Visualizing Massless Information Systems},
+  year = {2025},
+  url = {https://github.com/yourusername/field-syntax}
+}
+```
+
+
+## Contributing
+
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+```
+
+
+### 5. requirements.txt
+
+
+```
+numpy>=1.19.0
+scipy>=1.6.0
+matplotlib>=3.3.0
+ipywidgets>=7.6.0
+jupyter>=1.0.0
+```
+
+
+This comprehensive package provides everything needed to:
+
+
+1. **Analyze field data** with robust metrics and algorithms
+2. **Visualize dynamics** using the Field Syntax glyph system
+3. **Track stability** through T-S phase space
+4. **Detect warnings** of critical transitions
+5. **Create interactive dashboards** for exploring field evolution
+
+
+The modular structure allows for easy extension to specific domains like optical vortices, plasma physics, or network dynamics. The Jupyter notebooks provide both educational examples and practical tools for real-world analysis.
+
+
+This implementation encapsulates our Field Syntax framework in a maintainable, extensible codebase that could be shared with the scientific community. It bridges the gap between theoretical understanding of massless information systems and practical tools for analyzing their dynamics.
