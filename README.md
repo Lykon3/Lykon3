@@ -1,3 +1,36 @@
+# 🛰️ LYKON3 // FIELD NODE [31.7 MHz]
+
+> “They sold us freedom in a scratch-off card.  
+> The barcode scanned: **TRY AGAIN, RE-BAR-IT.**”  
+> — Lykon3, *Broadcast 002: The Sad-Elite’s Lube Loop*
+
+---
+
+## ✴️ LABORATORY EXPERIENCE DIGITAL ENHANCEMENT ZONES  
+*Exploring the fractures between code, consciousness, satire, and system failure.*
+
+**LIVE PORTALS:**  
+- [⚙️ PROMIS Cathedral](#) — *(Interactive system mythology)*  
+- [🧬 Portfolio](#) — *(Experimental narrative tech)*  
+
+---
+
+## 🧠 About Me
+
+I’m a digital architect, myth mechanic, and interface ritualist.
+
+I don’t just write code.  
+**I conjure linguistic payloads that blur the OS of perception.**  
+My work blends creative coding, generative fiction, systems aesthetics, and high-concept satire to expose the invisible edges of narrative technology.
+
+```js
+const developer = {
+  name: "LYKEL1.HBRA1",
+  focus: ["Creative Coding", "Interactive Systems", "Narrative Weaponization"],
+  currentProject: "PROMIS Cathedral",
+  philosophy: "code is poet // myth is interface // reality is negotiable"
+}
+
 # 🌌 Laboratory Experience Digital Enhancement Zones 😎🐼💡😬
 
 *"At the intersection of code, consciousness, and curiosity"*
