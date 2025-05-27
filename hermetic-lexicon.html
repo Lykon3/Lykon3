@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hermetic Lexicon - Digital Mystery School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e8e6d3;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated starfield background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b8b5a0;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .symbols-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .symbol-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .symbol-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .symbol-card:hover::before {
+            left: 100%;
+        }
+
+        .symbol-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .symbol-display {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #d4af37;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .symbol-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #e8e6d3;
+            margin-bottom: 0.5rem;
+        }
+
+        .symbol-brief {
+            font-size: 1rem;
+            color: #b8b5a0;
+            line-height: 1.5;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 2% auto;
+            padding: 0;
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-symbol {
+            font-size: 5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: #e8e6d3;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .interpretation-layer {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #d4af37;
+            border-radius: 8px;
+        }
+
+        .layer-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .layer-content {
+            line-height: 1.7;
+            color: #e8e6d3;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #d4af37;
+        }
+
+        .related-symbols {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .related-title {
+            font-family: 'Cinzel', serif;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .related-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .related-link {
+            padding: 0.5rem 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            color: #d4af37;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .related-link:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        /* Hall Mode Toggle */
+        .hall-mode-toggle {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .hall-mode-toggle:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.6);
+            transform: scale(1.1);
+        }
+
+        .hall-mode-toggle.active {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .feather-icon {
+            font-size: 1.5rem;
+            color: #d4af37;
+            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+        }
+
+        .hall-quote {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .hall-quote.visible {
+            display: block;
+            animation: hallQuoteFadeIn 0.5s ease-out;
+        }
+
+        @keyframes hallQuoteFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hall-quote::before {
+            content: '❝';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 3rem;
+            color: #d4af37;
+            opacity: 0.3;
+        }
+
+        .hall-text {
+            font-style: italic;
+            color: #e8e6d3;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .hall-attribution {
+            text-align: right;
+            color: #d4af37;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .hall-mode-indicator {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(212, 175, 55, 0.9);
+            color: #1a1a2e;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .hall-mode-indicator.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .symbols-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <!-- Hall Mode Indicator -->
+    <div class="hall-mode-indicator" id="hallModeIndicator">
+        Hall Mode Activated ✨
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Hermetic Lexicon</h1>
+            <p class="subtitle">Interactive dictionary of sacred symbols with multi-layered interpretations from historical, psychological, and mystical perspectives.</p>
+        </div>
+
+        <div class="symbols-grid">
+            <div class="symbol-card" onclick="openModal('mercury')">
+                <div class="symbol-display">☿</div>
+                <h3 class="symbol-name">Mercury</h3>
+                <p class="symbol-brief">The divine messenger, quicksilver of transformation, and the hermetic principle of communication between worlds.</p>
+            </div>
+
+            <div class="symbol-card" onclick="openModal('solomon')">
+                <div class="symbol-display">✡</div>
+                <h3 class="symbol-name">Seal of Solomon</h3>
+                <p class="symbol-brief">The hexagram of perfect balance, uniting fire and water, heaven and earth in divine harmony.</p>
+            </div>
+
+            <div class="symbol-card" onclick="openModal('scales')">
+                <div class="symbol-display">⚖</div>
+                <h3 class="symbol-name">Scales of Justice</h3>
+                <p class="symbol-brief">The eternal balance of cosmic law, weighing truth against illusion in the court of divine judgment.</p>
+            </div>
+
+            <div class="symbol-card" onclick="openModal('earth')">
+                <div class="symbol-display">🜃</div>
+                <h3 class="symbol-name">Earth Element</h3>
+                <p class="symbol-brief">The foundation of manifestation, the sacred ground from which all physical reality springs forth.</p>
+            </div>
+
+            <div class="symbol-card" onclick="openModal('ouroboros')">
+                <div class="symbol-display">⚭</div>
+                <h3 class="symbol-name">Ouroboros</h3>
+                <p class="symbol-brief">The eternal serpent consuming itself, the cycle of death and rebirth, alpha and omega united.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="mercury-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('mercury')">&times;</span>
+            <div class="hall-mode-toggle" onclick="toggleHallMode('mercury')" title="Toggle Hall Mode">
+                <span class="feather-icon">🪶</span>
+            </div>
+            <div class="modal-header">
+                <div class="modal-symbol">☿</div>
+                <h2 class="modal-title">Mercury</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">Mercury, the Roman messenger god (Greek Hermes), governs communication, travel, and commerce. In alchemy, mercury represents the fluid principle that dissolves and transforms all metals, the prima materia of transmutation.</p>
+                    <div class="hall-quote" id="mercury-hall-surface">
+                        <p class="hall-text">"Mercury is the most mysterious of the planetary spirits, for it partakes of both the solar and lunar natures, being neither wholly positive nor negative, but rather the equilibrium between the two extremes."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Secret Teachings of All Ages</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">Jung identified Mercury as the trickster archetype, the shape-shifting aspect of consciousness that mediates between the conscious and unconscious minds. It represents mental agility, wit, and the capacity for psychological transformation.</p>
+                    <div class="hall-quote" id="mercury-hall-psychological">
+                        <p class="hall-text">"The mind of Mercury is the divine mind in man, the link between the mortal and immortal consciousness. Through Mercury, the soul learns to transcend the limitations of material thought."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Lectures on Ancient Philosophy</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In Hermetic philosophy, Mercury embodies the principle of "solve et coagula" - dissolve and coagulate. It is the divine intelligence that breaks down rigid thought patterns and reconstitutes them in higher forms, the alchemical fire of mental transmutation.</p>
+                    <div class="hall-quote" id="mercury-hall-esoteric">
+                        <p class="hall-text">"Mercury is the universal solvent of the philosophers, the agent by which the gross is separated from the subtle, and the spiritual essence is extracted from material dross."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Chemical Marriage</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Meditate on Mercury when seeking mental clarity, creative solutions, or spiritual communication. It aids in breaking through intellectual limitations and opening channels between different levels of consciousness.</p>
+                    <div class="hall-quote" id="mercury-hall-personal">
+                        <p class="hall-text">"Let the student invoke Mercury through the contemplation of wisdom, for it is the messenger that carries the soul's aspirations to the throne of the Divine Mind."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Self-Unfoldment by Disciplines of Realization</p>
+                    </div>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Caduceus</a>
+                        <a href="#" class="related-link">Pentagram</a>
+                        <a href="#" class="related-link">Philosophical Egg</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="solomon-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('solomon')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-symbol">✡</div>
+                <h2 class="modal-title">Seal of Solomon</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">The hexagram, composed of two interlaced triangles, has been used across cultures as a symbol of divine protection and cosmic harmony. Known as the Star of David in Jewish tradition and the Seal of Solomon in Islamic lore.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">Represents the integration of opposites - masculine and feminine, conscious and unconscious, active and receptive. Jung saw it as a mandala of psychological wholeness, the reconciliation of conflicting aspects of the psyche.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">The upward triangle represents fire, aspiration, and divine ascent. The downward triangle represents water, receptivity, and divine descent. Their union creates the perfect balance necessary for magical operation and spiritual realization.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Use this symbol for meditation on balance and integration. It helps harmonize opposing forces within yourself and creates a protective field of equilibrium around your spiritual practice.</p>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Pentagram</a>
+                        <a href="#" class="related-link">Ankh</a>
+                        <a href="#" class="related-link">Yin Yang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="scales-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('scales')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-symbol">⚖</div>
+                <h2 class="modal-title">Scales of Justice</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">Ancient symbol of justice and moral balance, held by Themis and later Justice personified. Used in Egyptian mythology where Anubis weighs the heart against the feather of Ma'at to determine the soul's worthiness.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">Represents the ethical function of consciousness, the inner judge that weighs right against wrong. It symbolizes the development of moral reasoning and the capacity for fair judgment.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In Hermetic law, the scales represent cosmic justice - the principle that all actions create equal and opposite reactions. They symbolize the need for perfect equilibrium in magical work and spiritual development.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Contemplate the scales when facing difficult decisions or seeking to understand karmic patterns. They help develop discernment and align personal will with universal justice.</p>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Feather of Ma'at</a>
+                        <a href="#" class="related-link">Libra</a>
+                        <a href="#" class="related-link">Sword of Truth</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="earth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('earth')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-symbol">🜃</div>
+                <h2 class="modal-title">Earth Element</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">One of the four classical elements, earth represents solidity, stability, and material manifestation. In alchemical symbolism, it is depicted as a downward-pointing triangle bisected by a horizontal line.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">Earth represents the grounding function of consciousness, practical wisdom, and connection to physical reality. It embodies patience, endurance, and the capacity to manifest ideas in tangible form.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In Hermetic philosophy, earth is the final stage of manifestation, where divine ideas become material reality. It represents the body of the cosmic being and the sacred vessel through which spirit expresses itself.</p>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Work with earth energy for grounding, stability, and bringing projects to completion. It helps establish strong foundations and maintain connection to practical wisdom.</p>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Square</a>
+                        <a href="#" class="related-link">Mountain</a>
+                        <a href="#" class="related-link">Salt</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ouroboros-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('ouroboros')">&times;</span>
+            <div class="hall-mode-toggle" onclick="toggleHallMode('ouroboros')" title="Toggle Hall Mode">
+                <span class="feather-icon">🪶</span>
+            </div>
+            <div class="modal-header">
+                <div class="modal-symbol">⚭</div>
+                <h2 class="modal-title">Ouroboros</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">Ancient symbol of a serpent eating its own tail, found in Egyptian, Greek, and Norse mythology. Represents the cyclical nature of time, eternal return, and the unity of beginning and end.</p>
+                    <div class="hall-quote" id="ouroboros-hall-surface">
+                        <p class="hall-text">"The Ouroboros is the symbol of eternity and the endless cycle of birth and death, which nature imposes upon all her creation."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Secret Teachings of All Ages</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">Jung interpreted the ouroboros as the prima materia of the unconscious - the undifferentiated source from which consciousness emerges and to which it returns. It represents the process of psychological renewal through destruction and recreation.</p>
+                    <div class="hall-quote" id="ouroboros-hall-psychological">
+                        <p class="hall-text">"In the circular wisdom of the serpent lies the secret of regeneration—the soul consuming its own ignorance to birth a higher understanding."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Phoenix: An Illustrated Review of Occultism</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In alchemy, the ouroboros represents the circular nature of the Work - the eternal process of dissolution and coagulation that leads to the Philosopher's Stone. It is the divine serpent of wisdom consuming ignorance to birth enlightenment.</p>
+                    <div class="hall-quote" id="ouroboros-hall-esoteric">
+                        <p class="hall-text">"The alchemical serpent devours its own tail in the endless circulation of the One Thing—the prima materia that becomes the Philosopher's Stone through eternal transformation."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Twelve World Teachers</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Meditate on the ouroboros during times of transition and transformation. It helps you understand the cyclical nature of growth and find meaning in both endings and beginnings.</p>
+                    <div class="hall-quote" id="ouroboros-hall-personal">
+                        <p class="hall-text">"The wise student learns from the serpent the great secret: that all endings are beginnings, and in the cycle of eternal return lies the path to immortality."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Pathways of Philosophy</p>
+                    </div>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Phoenix</a>
+                        <a href="#" class="related-link">Spiral</a>
+                        <a href="#" class="related-link">Eternal Knot</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sun-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sun')">&times;</span>
+            <div class="hall-mode-toggle" onclick="toggleHallMode('sun')" title="Toggle Hall Mode">
+                <span class="feather-icon">🪶</span>
+            </div>
+            <div class="modal-header">
+                <div class="modal-symbol">☉</div>
+                <h2 class="modal-title">Sun</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">The sun has been revered across all cultures as the source of life, light, and divine power. From Ra in Egypt to Helios in Greece, solar deities represent the highest spiritual principles and the illuminating power of consciousness.</p>
+                    <div class="hall-quote" id="sun-hall-surface">
+                        <p class="hall-text">"The sun is the great symbol of the Supreme Deity, the visible god of the ancient world, the supreme fire from which all things receive their life and light."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Secret Teachings of All Ages</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">The sun represents the conscious mind, the ego-self, and the principle of individuation. It embodies confidence, vitality, and the heroic journey toward self-realization and authentic expression.</p>
+                    <div class="hall-quote" id="sun-hall-psychological">
+                        <p class="hall-text">"Within man burns the solar fire of consciousness—the divine spark that separates him from the animal kingdom and links him to the gods."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Man: The Grand Symbol of the Mysteries</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In esoteric tradition, the sun symbolizes the Spiritual Self, the Christ consciousness, and the illuminated state of being. It represents the central fire around which all lesser lights orbit in perfect harmony.</p>
+                    <div class="hall-quote" id="sun-hall-esoteric">
+                        <p class="hall-text">"The Spiritual Sun never sets; it is the eternal light that shines within the sanctuary of the human heart, waiting to be acknowledged and adored."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Ways of the Lonely Ones</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Work with solar energy for clarity, confidence, and spiritual illumination. Sun meditation helps you connect with your authentic self and radiate positive influence in the world.</p>
+                    <div class="hall-quote" id="sun-hall-personal">
+                        <p class="hall-text">"Let the aspirant daily greet the rising sun with gratitude, for in its golden rays lies the promise of spiritual dawn within the human soul."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Self-Unfoldment by Disciplines of Realization</p>
+                    </div>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Gold</a>
+                        <a href="#" class="related-link">Phoenix</a>
+                        <a href="#" class="related-link">Crown</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="moon-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('moon')">&times;</span>
+            <div class="hall-mode-toggle" onclick="toggleHallMode('moon')" title="Toggle Hall Mode">
+                <span class="feather-icon">🪶</span>
+            </div>
+            <div class="modal-header">
+                <div class="modal-symbol">☾</div>
+                <h2 class="modal-title">Moon</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">The moon governs cycles, tides, and the passage of time. Ancient cultures saw lunar deities as guardians of mystery, magic, and the feminine principle. From Artemis to Hecate, the moon represents the ever-changing face of divine wisdom.</p>
+                    <div class="hall-quote" id="moon-hall-surface">
+                        <p class="hall-text">"The moon is the symbol of the generative power in nature and the patron of all growth and increase. Its waxing and waning represent the eternal rhythm of life."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Secret Teachings of All Ages</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">The moon symbolizes the unconscious mind, intuition, and the receptive principle. It governs dreams, emotions, and the cyclical nature of psychological transformation through phases of growth and release.</p>
+                    <div class="hall-quote" id="moon-hall-psychological">
+                        <p class="hall-text">"In the silver mirror of the moon, the soul beholds its own reflection—the mysterious depths where divine wisdom speaks through symbol and dream."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Initiates of the Flame</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In mystical traditions, the moon represents the astral plane, the realm of forms and reflections. It is the silver gateway through which spiritual energies descend into manifestation and through which the soul ascends in meditation.</p>
+                    <div class="hall-quote" id="moon-hall-esoteric">
+                        <p class="hall-text">"The moon is the cosmic reflector, gathering the spiritual light of the sun and transmuting it into the silvery radiance that nourishes the growing soul."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Lectures on Ancient Philosophy</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Attune to lunar cycles for intuitive development, emotional healing, and dream work. Moon meditation enhances receptivity to spiritual guidance and helps you honor the natural rhythms of growth and release.</p>
+                    <div class="hall-quote" id="moon-hall-personal">
+                        <p class="hall-text">"The wise student learns to work with the lunar tides, planting spiritual seeds in the new moon and harvesting wisdom in the full moon's light."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Secret Destiny of America</p>
+                    </div>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Silver</a>
+                        <a href="#" class="related-link">Crescent</a>
+                        <a href="#" class="related-link">Triple Goddess</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="saturn-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('saturn')">&times;</span>
+            <div class="hall-mode-toggle" onclick="toggleHallMode('saturn')" title="Toggle Hall Mode">
+                <span class="feather-icon">🪶</span>
+            </div>
+            <div class="modal-header">
+                <div class="modal-symbol">♄</div>
+                <h2 class="modal-title">Saturn</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">Saturn, the Roman god of time and agriculture, represents the principle of limitation, structure, and the harvest of karma. In alchemy, Saturn is associated with lead—the base metal that must be transformed through spiritual discipline.</p>
+                    <div class="hall-quote" id="saturn-hall-surface">
+                        <p class="hall-text">"Saturn is the great teacher through adversity, the cosmic timekeeper that measures the soul's progress through the cycles of experience."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Astrological Keywords</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">Saturn represents the wise elder, the stern father, and the principle of earned wisdom. It governs discipline, responsibility, and the psychological maturation that comes through facing life's challenges with perseverance.</p>
+                    <div class="hall-quote" id="saturn-hall-psychological">
+                        <p class="hall-text">"Through Saturn's school of hard knocks, the soul learns the priceless lessons that cannot be taught by any other teacher—patience, endurance, and true strength."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Therapeutic Value of Music</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In esoteric philosophy, Saturn guards the threshold between material and spiritual realms. It represents the dweller on the threshold—the accumulated karma that must be resolved before spiritual initiation can occur.</p>
+                    <div class="hall-quote" id="saturn-hall-esoteric">
+                        <p class="hall-text">"Saturn is the guardian of the gate, the cosmic sentinel who demands that each soul prove its worthiness before entering the mysteries of the inner sanctuary."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Lost Keys of Freemasonry</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Work with Saturn energy for developing discipline, accepting responsibility, and learning from difficulties. Saturn meditation helps you find meaning in challenges and develop the persistence needed for spiritual achievement.</p>
+                    <div class="hall-quote" id="saturn-hall-personal">
+                        <p class="hall-text">"The student who embraces Saturn's lessons with gratitude finds that limitation becomes liberation, and discipline becomes the doorway to true freedom."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Self-Unfoldment by Disciplines of Realization</p>
+                    </div>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Hourglass</a>
+                        <a href="#" class="related-link">Scythe</a>
+                        <a href="#" class="related-link">Mountain</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ishtar-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('ishtar')">&times;</span>
+            <div class="hall-mode-toggle" onclick="toggleHallMode('ishtar')" title="Toggle Hall Mode">
+                <span class="feather-icon">🪶</span>
+            </div>
+            <div class="modal-header">
+                <div class="modal-symbol">✶</div>
+                <h2 class="modal-title">Star of Ishtar</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">The eight-pointed star was sacred to Ishtar, the Mesopotamian goddess of love and war. This symbol represents the planet Venus in both its morning and evening aspects, embodying the dual nature of the divine feminine power.</p>
+                    <div class="hall-quote" id="ishtar-hall-surface">
+                        <p class="hall-text">"Ishtar, the Queen of Heaven, rules both love and strife, for she understands that creation and destruction are but two faces of the same cosmic force."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Secret Teachings of All Ages</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">The Star of Ishtar represents the integration of opposing forces within the psyche—love and power, creation and destruction, beauty and fierce protection. It embodies the wholeness that comes from embracing all aspects of feminine power.</p>
+                    <div class="hall-quote" id="ishtar-hall-psychological">
+                        <p class="hall-text">"In the eight-rayed star lies the secret of balanced power—the wisdom to know when to create and when to destroy, when to yield and when to stand firm."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Divine Art of Living</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In mystical tradition, the eight-pointed star represents cosmic harmony achieved through the union of opposites. It is the star of regeneration, marking the soul's journey through the eight stages of initiation.</p>
+                    <div class="hall-quote" id="ishtar-hall-esoteric">
+                        <p class="hall-text">"The eightfold star is the symbol of cosmic Venus—the principle of attraction that draws all things back to their divine source through love made perfect in wisdom."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Adepts in the Eastern Esoteric Tradition</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Meditate on Ishtar's star to balance assertiveness with receptivity, power with compassion. It helps integrate the warrior and lover aspects of personality into a harmonious whole.</p>
+                    <div class="hall-quote" id="ishtar-hall-personal">
+                        <p class="hall-text">"Let the seeker invoke the Star of Ishtar to learn the great mystery: that true power lies not in domination but in the perfect balance of strength and love."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Blessed Angels</p>
+                    </div>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Venus</a>
+                        <a href="#" class="related-link">Rose</a>
+                        <a href="#" class="related-link">Octagram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fire-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('fire')">&times;</span>
+            <div class="hall-mode-toggle" onclick="toggleHallMode('fire')" title="Toggle Hall Mode">
+                <span class="feather-icon">🪶</span>
+            </div>
+            <div class="modal-header">
+                <div class="modal-symbol">🔺</div>
+                <h2 class="modal-title">Fire Triangle</h2>
+            </div>
+            <div class="modal-body">
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Surface Layer - Historical</h3>
+                    <p class="layer-content">The upward-pointing triangle has represented the element of fire across ancient traditions. In alchemy, it symbolizes the active, masculine principle of transformation, the divine spark that catalyzes all change and purification.</p>
+                    <div class="hall-quote" id="fire-hall-surface">
+                        <p class="hall-text">"Fire is the most sacred of the elements, for it alone among the four partakes directly of the divine nature and aspires ever upward toward its source."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Secret Teachings of All Ages</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Psychological Layer - Archetypal</h3>
+                    <p class="layer-content">Fire represents passion, inspiration, and the transformative power of will. It embodies the heroic impulse, creative energy, and the drive toward self-actualization that burns away everything that is not authentic.</p>
+                    <div class="hall-quote" id="fire-hall-psychological">
+                        <p class="hall-text">"The fire within man is his divine heritage—the spark of creative will that enables him to transform himself and his world through conscious intent."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Phoenix: An Illustrated Review of Occultism</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Esoteric Layer - Mystical</h3>
+                    <p class="layer-content">In esoteric philosophy, fire represents the electric fluid of spiritual illumination. It is the sacred flame that burns within the human heart, the Kundalini force that awakens spiritual consciousness and connects earth to heaven.</p>
+                    <div class="hall-quote" id="fire-hall-esoteric">
+                        <p class="hall-text">"The alchemical fire burns away the dross of material consciousness, leaving only the pure gold of spiritual realization. This is the flame that transforms the lead of ignorance into the gold of wisdom."</p>
+                        <p class="hall-attribution">— Manly P. Hall, The Chemical Marriage</p>
+                    </div>
+                </div>
+                
+                <div class="interpretation-layer">
+                    <h3 class="layer-title">Personal Layer - Contemplative</h3>
+                    <p class="layer-content">Work with fire energy for purification, inspiration, and spiritual transformation. Fire meditation kindles the inner flame of aspiration and burns away obstacles to spiritual progress.</p>
+                    <div class="hall-quote" id="fire-hall-personal">
+                        <p class="hall-text">"Let the aspirant daily kindle the sacred fire of devotion, for in its upward-reaching flames lies the power to transcend all limitations and unite with the Divine."</p>
+                        <p class="hall-attribution">— Manly P. Hall, Self-Unfoldment by Disciplines of Realization</p>
+                    </div>
+                </div>
+                
+                <div class="related-symbols">
+                    <h3 class="related-title">Related Symbols</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link">Phoenix</a>
+                        <a href="#" class="related-link">Salamander</a>
+                        <a href="#" class="related-link">Pyramid</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 100;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Hall Mode functionality
+        let hallModeStates = {};
+
+        function toggleHallMode(symbolId) {
+            const isActive = hallModeStates[symbolId] || false;
+            hallModeStates[symbolId] = !isActive;
+            
+            const toggle = document.querySelector(`#${symbolId}-modal .hall-mode-toggle`);
+            const quotes = document.querySelectorAll(`#${symbolId}-modal .hall-quote`);
+            const indicator = document.getElementById('hallModeIndicator');
+            
+            if (hallModeStates[symbolId]) {
+                // Activate Hall Mode
+                toggle.classList.add('active');
+                quotes.forEach(quote => quote.classList.add('visible'));
+                indicator.classList.add('visible');
+                
+                // Hide indicator after 3 seconds
+                setTimeout(() => {
+                    indicator.classList.remove('visible');
+                }, 3000);
+            } else {
+                // Deactivate Hall Mode
+                toggle.classList.remove('active');
+                quotes.forEach(quote => quote.classList.remove('visible'));
+            }
+        }
+
+        function openModal(symbolId) {
+            document.getElementById(symbolId + '-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(symbolId) {
+            document.getElementById(symbolId + '-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Reset Hall Mode state when closing modal
+            if (hallModeStates[symbolId]) {
+                toggleHallMode(symbolId);
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+        });
+    </script>
+</body>
+</html>
