@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Lykon3/digital-mystery-school/main/banner.png" alt="LYKON3 Banner" />
+  <img src="https://raw.githubusercontent.com/Lykon3/Lykon3/main/banner.png" alt="LYKON3 Banner" />
 </p>
 
 # ✨ Digital Mystery School
