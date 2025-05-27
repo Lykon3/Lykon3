@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Lykon3/Lykon3/main/banner.png" alt="LYKON3 Banner" />
+  <img src="https://raw.githubusercontent.com/Lykon3/Lykon3/main/Screenshot_20250527_063554_Messages.jpg" alt="LYKON3 Banner" />
 </p>
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/Lykon3/Lykon3)
