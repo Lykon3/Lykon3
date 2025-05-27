@@ -2,6 +2,8 @@
   <img src="https://raw.githubusercontent.com/Lykon3/Lykon3/main/banner.png" alt="LYKON3 Banner" />
 </p>
 
+![GitHub last commit](https://img.shields.io/github/last-commit/Lykon3/Lykon3)
+![Repo size](https://img.shields.io/github/repo-size/Lykon3/Lykon3)
 # ✨ Digital Mystery School
 
 Welcome to the **Digital Mystery School** — an open-source sanctuary for modern mystics, esoteric technologists, and symbolic explorers. This interactive archive blends ancient wisdom with digital tools, inviting you to engage with the Hermetic, the mythic, and the unknown through your browser..
