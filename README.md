@@ -1,22 +1,10 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Lykon3/digital-mystery-school/main/banner.PNG" alt="LYKON3 Banner" />
+  <img src="https://raw.githubusercontent.com/Lykon3/digital-mystery-school/main/banner.png" alt="LYKON3 Banner" />
 </p>
 
 # ✨ Digital Mystery School
 
-Welcome to the **Digital Mystery School** — an open-source sanctuary for modern mystics, esoteric technologists, and symbolic explorers. This interactive archive blends ancient wisdom with digital tools, inviting you to engage with the Hermetic, the mythic, and the unknown through your browser.
-
----
-
-## 🧭 Project Vision
-
-The Digital Mystery School is a creative and philosophical engine for:
-- Designing rituals
-- Generating symbolic glyphs
-- Exploring Hermetic and comparative philosophy
-- Building an open-source codex of archetypal tools
-
-This space bridges the ancient and the electric — a constellation of interfaces for self-initiation, creative experimentation, and open esotericism.
+Welcome to the **Digital Mystery School** — an open-source sanctuary for modern mystics, esoteric technologists, and symbolic explorers. This interactive archive blends ancient wisdom with digital tools, inviting you to engage with the Hermetic, the mythic, and the unknown through your browser..
 
 ---
 
