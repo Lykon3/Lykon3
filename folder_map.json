@@ -1,0 +1,43 @@
+{
+  "images": {
+    "extensions": [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".gif"
+    ],
+    "destination": "assets/memes/"
+  },
+  "intel": {
+    "extensions": [
+      ".md",
+      ".txt"
+    ],
+    "destination": "assets/intel/"
+  },
+  "audio": {
+    "extensions": [
+      ".mp3",
+      ".wav"
+    ],
+    "destination": "assets/audio/"
+  },
+  "html": {
+    "extensions": [
+      ".html"
+    ],
+    "destination": "html/"
+  },
+  "python_scripts": {
+    "extensions": [
+      ".py"
+    ],
+    "destination": "scripts/"
+  },
+  "json_meta": {
+    "extensions": [
+      ".json"
+    ],
+    "destination": "meta/"
+  }
+}
