@@ -2,6 +2,10 @@
   <img src="https://raw.githubusercontent.com/Lykon3/RicFlairProtocol/main/ric_flair_banner.jpg" alt="Lykon3 Banner" width="100%">
 </div>
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Lykon3/Lykon3/main/Screenshot_20250527_063554_Messages.jpg" alt="LYKON3 Banner" />
+</p>
+
 ---
 
 # 🧬 LYKON3: Tactical Archives of Narrative Instability
