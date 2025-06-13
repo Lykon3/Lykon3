@@ -1,6 +1,50 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Lykon3/RicFlairProtocol/main/ric_flair_banner.jpg" alt="Lykon3 Banner" width="100%">
-</div>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Lykon3/Lykon3/main/Screenshot_20250527_063554_Messages.jpg" alt="LYKON3 Banner" />
+</p>
+
+---
+
+# 🧬 LYKON3: Tactical Archives of Narrative Instability
+
+Welcome to **Lykon3**, a multi-repo digital infrastructure designed to:
+- Analyze, distort, and reframe dominant narratives
+- Convert belief volatility into structured information assets
+- Collapse the boundary between codebase and consciousness artifact
+
+> 🛰️ **This is not a portfolio.**  
+> It’s a distributed thought weapon system.
+
+---
+
+## 🔧 Featured Protocols
+
+| Repo | Function |
+|------|----------|
+| 🔗 [`RicFlairProtocol`](https://github.com/Lykon3/RicFlairProtocol) | Meme-engineered chaos reactor, narrative volatility index, and signal drop repository |
+| 🔗 `OperatorL33` *(private or legacy)* | Precursor to RicFlairProtocol. Experimental NVX tuning fork |
+| 🔗 `super-duper-meme` | GPU-accelerated collapse simulation & visual vibe entropy stack |
+| 🔗 `hitsfunny2meLe1` | Noise trap / raw media / memetic intake pipe (being folded into Ric Flair Core) |
+
+---
+
+## 🗂 System Modules
+
+- **`auto_sort.py`** – Repo-cleaning file distributor
+- **`folder_map.json`** – Sort logic for multidimensional file types
+- **`narrative_volatility.py`** – Core logic for computing instability index
+- **`an_examination_core.md`** – Consciousness artifact for recursive epistemic defense
+- **`LICENSE.html`** – Meme remixable but spiritually binding
+
+---
+
+## 🧠 Philosophical Core
+
+Blame
+📡 CHANNEL 31.7 — LYKON3’S LAST SERMON
+
+"Wrinkled Khakis, War Crimes & Walmart Lore, Bitch." 🧠 “PEE WEE GERMAN” | Counterintelligence Overlay
+
+If you can do this with $20 tools, what the hell are state actors doing with full stacks? ⚖️ “YOU AIN’T RIGHT” | Behavioral Deflection Protocol
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Lykon3/Lykon3/main/Screenshot_20250527_063554_Messages.jpg" alt="LYKON3 Banner" />
