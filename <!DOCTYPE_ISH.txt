@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Born to Shred: The M&LE1 Saga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Bebas+Neue&display=swap');
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        h1, .page-title, .finale h2 {
+            font-family: 'Bebas Neue', cursive;
+        }
+
+        .glitch-text {
+            animation: textGlitch 0.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes textGlitch {
+            0% { text-shadow: 2px 2px 0 #ff00ff, -2px -2px 0 #00ffff; }
+            100% { text-shadow: -2px 2px 0 #00ffff, 2px -2px 0 #ff00ff; }
+        }
+        
+        .rainbow-text {
+            background: linear-gradient(to right, #ff6b6b, #4ecdc4, #45b7d1, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 100%;
+            animation: rainbow 3s ease-in-out infinite;
+        }
+        
+        @keyframes rainbow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.03) 10px,
+                rgba(255,255,255,0.03) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+        
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        h1 {
+            animation: glitch-title 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glitch-title {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-2px); }
+            40% { transform: translateX(2px); }
+            60% { transform: translateX(-1px); }
+            80% { transform: translateX(1px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .page {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .panel:hover {
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 10px 30px rgba(78,205,196,0.5);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .panel:hover::before {
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .thought-bubble {
+            position: relative;
+        }
+        
+        .thought-bubble::before,
+        .thought-bubble::after {
+            content: '';
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border: 2px dashed #45b7d1;
+            border-radius: 50%;
+        }
+        
+        .thought-bubble::before {
+            width: 20px;
+            height: 20px;
+            bottom: -15px;
+            left: 30px;
+        }
+        
+        .thought-bubble::after {
+            width: 12px;
+            height: 12px;
+            bottom: -25px;
+            left: 25px;
+        }
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: #FF3D00;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] text-white overflow-x-hidden">
+    <header class="text-center p-8 bg-black bg-opacity-50 relative overflow-hidden header-bg">
+        <h1 class="text-6xl text-[#ff6b6b] relative z-10" style="text-shadow: 3px 3px 0 #4ecdc4, 6px 6px 0 #45b7d1;">BORN TO SHRED</h1>
+        <p class="text-xl text-[#4ecdc4] mt-2 relative z-10">The Unauthorized Biography of M&LE1</p>
+    </header>
+    
+    <div id="comic-container" class="max-w-7xl mx-auto p-4 md:p-8">
+        <!-- Page 1 -->
+        <div class="page mb-16" style="animation-delay: 0.1s;">
+            <h2 class="page-title text-4xl text-[#ff6b6b] mb-6 text-center" style="text-shadow: 2px 2px 0 #4ecdc4;">PAGE 1 – "THE MYTH BEGINS"</h2>
+            <div class="grid gap-6 md:grid-cols-3">
+                <div class="panel bg-white bg-opacity-5 border-2 border-[#4ecdc4] rounded-lg p-6 relative overflow-hidden transition-all duration-300 ease-out cursor-pointer" data-prompt="A glitchy YouTube upload window in a dark, cyberpunk style. The video title says '8-YR-OLD GUITAR PRODIGY SHREDS'. Digital art, vaporwave colors.">
+                    <div class="panel-content relative z-10">
+                         <div class="dialogue bg-black bg-opacity-30 border-l-4 border-[#ff6b6b] p-3 my-2 rounded-md">
+                            <span class="glitch-text">Title: "8-YR-OLD GUITAR PRODIGY SHREDS LIKE HENDRIX nn"</span><br>
+                            Views: 3<br>
+                            Tags: #blessed #ai #genius #childprodigy #420talent
+                        </div>
+                    </div>
+                </div>
+                <div class="panel bg-white bg-opacity-5 border-2 border-[#4ecdc4] rounded-lg p-6 relative overflow-hidden transition-all duration-300 ease-out cursor-pointer" data-prompt="An 8-year-old boy, looking like a toy version of a Burning Man hippie savant, sits in a messy room lit by a lava lamp. He has wide, slightly glitchy AI-looking eyes. Comic book illustration style.">
+                     <div class="panel-content relative z-10 h-full flex items-center justify-center">
+                        <!-- Image will be inserted here -->
+                     </div>
+                </div>
+                <div class="panel bg-white bg-opacity-5 border-2 border-[#4ecdc4] rounded-lg p-6 relative overflow-hidden transition-all duration-300 ease-out cursor-pointer" data-prompt="Extreme close-up of the wide, uncanny eyes of an AI-generated 8-year-old boy. The eyes show subtle digital glitches. Hyper-realistic but unsettling.">
+                    <div class="panel-content relative z-10">
+                        <div class="thought-bubble bg-white bg-opacity-10 border-2 border-dashed border-[#45b7d1] rounded-2xl p-3 my-2 italic">
+                            <span class="character font-bold text-[#ff6b6b] block mb-1">M&LE1 (thinking):</span>
+                            "They'll never know I'm just a 40-year-old ex-Bitcoin miner with unresolved parental issues..."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 2 -->
+        <div class="page mb-16" style="animation-delay: 0.2s;">
+            <h2 class="page-title text-4xl text-[#ff6b6b] mb-6 text-center" style="text-shadow: 2px 2px 0 #4ecdc4;">PAGE 2 – "FARMER'S MARKET FAME"</h2>
+            <div class="grid gap-6 md:grid-cols-3">
+                <div class="panel bg-white bg-opacity-5 border-2 border-[#4ecdc4] rounded-lg p-6 relative overflow-hidden transition-all duration-300 ease-out cursor-pointer" data-prompt="An 8-year-old hippie-looking boy busking passionately outside a farmer's market, playing a tiny Flying V guitar. A sign says 'SUPPORT KIDS'. Vibrant comic book art.">
+                    <div class="panel-content relative z-10">
+                         <!-- Image will be inserted here -->
+                    </div>
+                </div>
+                <div class="panel bg-white bg-opacity-5 border-2 border-[#4ecdc4] rounded-lg p-6 relative overflow-hidden transition-all duration-300 ease-out cursor-pointer" data-prompt="An elderly, kind-looking hippie couple in tie-dye joyfully throws a $20 bill into the guitar case of a small boy busking. Warm, sunny comic book style.">
+                    <div class="panel-content relative z-10">
+                         <div class="dialogue bg-black bg-opacity-30 border-l-4 border-[#ff6b6b] p-3 my-2 rounded-md">
+                            <span class="character font-bold text-[#ff6b6b] block mb-1">Hippie Man:</span>
+                            "You're like if Jerry's spirit possessed a Build-A-Bear, little dude."
+                        </div>
+                    </div>
+                </div>
+                <div class="panel bg-white bg-opacity-5 border-2 border-[#4ecdc4] rounded-lg p-6 relative overflow-hidden transition-all duration-300 ease-out cursor-pointer" data-prompt="A close-up on the face of an 8-year-old boy with a knowing, mischievous smirk that seems too old for his face. Dramatic comic book shadowing.">
+                    <div class="panel-content relative z-10">
+                        <div class="thought-bubble bg-white bg-opacity-10 border-2 border-dashed border-[#45b7d1] rounded-2xl p-3 my-2 italic">
+                            <span class="character font-bold text-[#ff6b6b] block mb-1">M&LE1 (thinking):</span>
+                            "Thanks to Midjourney and some childlike whimsy, I'm their goddamn avatar of hope."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add more pages here following the same structure -->
+
+    </div>
+
+    <script type="module">
+        // --- Image Generation and Display ---
+        
+        // This function calls the image generation API
+        async function generateImage(prompt) {
+            const apiKey = ""; // API key is handled by the environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+            
+            const payload = {
+                instances: [{ prompt: prompt }],
+                parameters: { "sampleCount": 1 }
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+                    return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                } else {
+                    console.error('Image generation failed, response structure unexpected:', result);
+                    return null; // Return null if generation fails
+                }
+            } catch (error) {
+                console.error("Error generating image:", error);
+                return null; // Return null on error
+            }
+        }
+
+        // This function processes all panels with a 'data-prompt'
+        async function populatePanels() {
+            const panels = document.querySelectorAll('.panel[data-prompt]');
+            
+            for (const panel of panels) {
+                const prompt = panel.dataset.prompt;
+                const contentArea = panel.querySelector('.panel-content');
+                
+                // 1. Add a loading spinner
+                const loader = document.createElement('div');
+                loader.className = 'loader absolute inset-0 m-auto';
+                panel.appendChild(loader);
+
+                // 2. Generate the image
+                const imageUrl = await generateImage(prompt + ", comic book art style, vibrant, digital illustration");
+                
+                // 3. Remove loader
+                loader.remove();
+
+                // 4. Display the image or an error message
+                if (imageUrl) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = prompt;
+                    img.className = 'w-full h-full object-cover rounded-md';
+                    
+                    // Clear the content area if it has placeholders, but keep dialogue/thoughts
+                    const imageTarget = panel.querySelector('.panel-content > div:not(.dialogue):not(.thought-bubble)') || contentArea;
+                    if(imageTarget) {
+                        imageTarget.innerHTML = ''; // Clear placeholder content
+                        imageTarget.appendChild(img);
+                    } else {
+                        // If no specific target, prepend to the content
+                        contentArea.prepend(img);
+                    }
+
+                } else {
+                    // Display an error message if image generation fails
+                    const errorMsg = document.createElement('p');
+                    errorMsg.textContent = 'Image failed to load.';
+                    errorMsg.className = 'text-center text-red-400';
+                    contentArea.appendChild(errorMsg);
+                }
+            }
+        }
+
+        // Run the process when the window loads
+        window.onload = populatePanels;
+    </script>
+</body>
+</html>
+
